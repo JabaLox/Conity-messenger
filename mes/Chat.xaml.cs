@@ -36,19 +36,6 @@ namespace mes
             UserList(query);
             border.Visibility = Visibility.Collapsed;
             refrash();
-            //MessageBox.Show(path);
-
-            // RunPeriodicSave();
-
-            //con = new MySqlConnection(Connect);
-            //DataTable dt = new DataTable();
-            //MySqlDataAdapter adapter = new MySqlDataAdapter("select id_message from message", con);
-            //con.Open();
-            //adapter.Fill(dt);
-            //id_mess = (dt.Rows.Count + 1).ToString();
-            //con.Close();
-
-
         }
         string path = "";
         string filname=Global.Avatar;
@@ -56,30 +43,7 @@ namespace mes
         List<Message> messages = new List<Message>();
         bool flag_setings = false;
         int size_dialog = 0;
-        async System.Threading.Tasks.Task RunPeriodicSave()
-        {
-            while (true)
-            {
-                //await Task.Delay(5000);
-                await System.Threading.Tasks.Task.Delay(100);
-                if (id_dialog != "")
-                {
-                    
-                   // con = new MySqlConnection(Connect);
-                    //DataTable dt = new DataTable();
-                   // MySqlDataAdapter adapter = new MySqlDataAdapter($"select id_dialog from dialog where (sender_id={Convert.ToInt32(id_rec)} and recipient_id={Convert.ToInt32(Global.UsreId)}) or (recipient_id={Convert.ToInt32(id_rec)} and sender_id={Convert.ToInt32(Global.UsreId)})", con);
-                   // con.Open();
-                    //adapter.Fill(dt);
-                   // if (dt.Rows.Count > size_dialog)
-                   // {
-                       // messagesList();
-                   // }
-                    //con.Close();
-
-                }
-                UserList(query);
-            }
-        }
+        
         void refrash()
         {
             path = Directory.GetCurrentDirectory();
@@ -90,7 +54,7 @@ namespace mes
             password_settings.Text = Global.Paswword;
             avatar_user.ImageSource = new BitmapImage(new Uri(path+ "image\\" + Global.Avatar, UriKind.Relative));
         }
-        //string id_mess = "";
+
         public void UserList(string query)
         {
 
@@ -110,7 +74,6 @@ namespace mes
                 MySqlDataAdapter adapterm = new MySqlDataAdapter($"select id_dialog from dialog where (sender_id={dt.Rows[i][0]} and recipient_id={Convert.ToInt32(Global.UsreId)}) or (recipient_id={dt.Rows[i][0]} and sender_id={Convert.ToInt32(Global.UsreId)})", con);
 
                 adapterm.Fill(dm);
-                //MessageBox.Show(dt.Rows.Count.ToString());
                 if (dm.Rows.Count > 0)
                 {
                     System.Data.DataTable dt2 = new System.Data.DataTable();
@@ -131,10 +94,7 @@ namespace mes
                             {
                                 color = "";
                                 count = "•";
-                            }
-                       
-                        
-                       
+                            }    
                         time = dt2.Rows[0][2].ToString().Remove(5, 3);
                     }
                     else if (dt2.Rows.Count > 0 && dt2.Rows[0][3].ToString() != Global.UsreId)
@@ -204,8 +164,6 @@ namespace mes
                 {
                     date = dt.Rows[0][5].ToString() + " " + dt.Rows[0][6].ToString(),
                 });
-                //DateTime date_mess1 = Convert.ToDateTime(dt.Rows[0][8]);
-                //MessageBox.Show(messages[index].date);
                 for (int i = 0; i < dt.Rows.Count; ++i)
                 {
 
@@ -279,8 +237,7 @@ namespace mes
                 if (item != null)
                 {
                     id_rec = ((User)listUsers.SelectedItem).id_user;
-                    //MessageBox.Show(path);
-
+                    
                     avatar_rec.ImageSource = new BitmapImage(new Uri(path + ((User)listUsers.SelectedItem).photo, UriKind.Relative));
                     nick_recipient.Content = ((User)listUsers.SelectedItem).Name_user;
                 }
@@ -315,11 +272,11 @@ namespace mes
         {
             con = new MySqlConnection(Connect);
             System.Data.DataTable dt = new System.Data.DataTable();
-            // MessageBox.Show(((User)listUsers.SelectedItem).id_user+" "+ Convert.ToInt32(Global.UsreId));
+
             MySqlDataAdapter adapter = new MySqlDataAdapter($"select id_dialog from dialog where (sender_id={id_rec} and recipient_id={Convert.ToInt32(Global.UsreId)}) or (recipient_id={id_rec} and sender_id={Convert.ToInt32(Global.UsreId)})", con);
             con.Open();
             adapter.Fill(dt);
-            //MessageBox.Show(dt.Rows.Count.ToString());
+
             if (dt.Rows.Count > 0)
             {
                 id_dialog = dt.Rows[0][0].ToString();
@@ -338,7 +295,7 @@ namespace mes
             }
             DateTime date = DateTime.UtcNow;
             string time = date.Year.ToString() + "-" + date.Month.ToString() + "-" + date.Day.ToString() + " " + date.ToLocalTime().ToShortTimeString();
-            //MessageBox.Show(time);
+
             plug.Opacity = 0;
             System.Data.DataTable dm = new System.Data.DataTable();
             MySqlDataAdapter adapterm = new MySqlDataAdapter($"insert into message (id_dialog,content,author_id,`read`,time) value ({Convert.ToInt32(id_dialog)},'{text_sender.Text}',{Global.UsreId},0,'{time}')", con);
@@ -354,35 +311,6 @@ namespace mes
             {
                 SendMessageInDB();
             }
-        }
-
-        //private void Button_Click_1(object sender, RoutedEventArgs e)
-        //{
-        //    DoubleAnimation buttonAnimation = new DoubleAnimation();
-        //    buttonAnimation.From = helloButton.ActualWidth;
-        //    buttonAnimation.To = 150;
-        //    buttonAnimation.Duration = TimeSpan.FromSeconds(3);
-        //    helloButton.BeginAnimation(Button.WidthProperty, buttonAnimation);
-        //}
-
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            ////MessageBox.Show("ds");
-            //if (id_dialog != "")
-            //{
-            //    messagesList();
-            //}
-            //UserList(query);
-        }
-
-        private void Window_Deactivated(object sender, EventArgs e)
-        {
-            //if (id_dialog != "")
-            //{
-            //    messagesList();
-            //}
-            //UserList(query);
-            
         }
 
         private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
