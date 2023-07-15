@@ -31,7 +31,6 @@ namespace mes
 
         public MySqlConnection con;
         string Connect = "server=localhost;port=3306;user=root;database=conity_messenger;password=kolyan28;";
-        //public string Connect = "server=87.236.19.248;port=3306;user=ramzilyo_conity;database=ramzilyo_conity;password=(Ramzil11)";
         public MainWindow()
         {
             InitializeComponent();
